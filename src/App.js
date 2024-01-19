@@ -17,8 +17,55 @@ import NoPage from './pages/NoPage';
 import Navbar from './components/Navbar';
 import RegionFilterPage from './pages/RegionFilterPage.js';
 
+import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink, from, } from '@apollo/client';
 import { useQuery, gql } from '@apollo/client';
+import { onError } from '@apollo/client/link/error';
 
+const errorLink = onError(({ graphqlErrors, networkError }) => {
+  if (graphqlErrors) {
+    graphqlErrors.map(({ message, location, path }) => {
+      alert(`Graphql error ${message}`);
+    })
+  }
+})
+
+//Allows us to connect both the backend and frontend applications-------------------------
+const link = from([
+  errorLink,
+  new HttpLink({ uri: "http://localhost:6969/graphql" })
+]);
+//----------------------------------------------------------------------------------------
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: link,
+});
+
+function App() {
+  return (
+    <ApolloProvider client={client}>
+      <div>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/region" element={<RegionFilterPage />} />
+            <Route index element={<Home />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/races" element={<Races />} />
+            <Route path="/events" element={<Events />} />
+            <Route path="/individual" element={<IndividualResults />} />
+            <Route path="/team" element={<TeamResults />} />
+            <Route path="*" element={<NoPage />} />
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </ApolloProvider>
+  )
+}
+
+export default App;
+
+//Apollo Demo
+{/*
 const GET_LOCATIONS = gql`
   query GetLocations {
     locations {
@@ -57,35 +104,4 @@ function DisplayLocations() {
     </div>
   ));
 }
-
-
-
-
-
-
-
-{/*
-function App() {
-  return (
-    <div>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/region" element = {<RegionFilterPage />} />
-          <Route index element = {<Home />} />
-          <Route path="/home" element = {<Home />} />
-          <Route path="/races" element = {<Races />} />
-          <Route path="/events" element = {<Events />} />
-          <Route path="/individual" element = {<IndividualResults />} />
-          <Route path="/team" element = {<TeamResults />} />
-          <Route path="*" element = {<NoPage />} />
-        </Routes>
-      </BrowserRouter>
-      
-    </div>
-  )
-}
 */}
-
-
-
-export default App;
