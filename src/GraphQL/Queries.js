@@ -1,11 +1,20 @@
-import {gql} from '@apollo/client'
+import { gql } from '@apollo/client'
 
 export const GET_RACES = gql`
-    query {
-        fetchAllRaces{
+query fetchAllRaces {
+    response {
+      success
+      errors
+      result {
+          race {
+            race_id
             name
-
+          }
         }
+      }
     }
+  
 `
+
+
 

@@ -8,6 +8,7 @@ import { useTable } from "react-table";
 import RegionFilter from "../components/RegionFilter";
 
 function Races() {
+    //const searchQuery = urlParams.get("search");
 
     const data = React.useMemo(() => fakeData, []);
     const columns = React.useMemo(

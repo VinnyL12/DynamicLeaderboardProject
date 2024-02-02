@@ -1,11 +1,6 @@
 import './assets/App.css';
 import "./assets/styles.css";
 import React from "react";
-
-import { SearchBar } from './components/SearchBar.jsx';
-import { SearchResultsList } from './components/SearchResultsList.jsx';
-
-import { useTable } from "react-table";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Home from "./pages/Home";
@@ -17,22 +12,28 @@ import NoPage from './pages/NoPage';
 import Navbar from './components/Navbar';
 import RegionFilterPage from './pages/RegionFilterPage.js';
 
-import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink, from, } from '@apollo/client';
-import { useQuery, gql } from '@apollo/client';
+import { 
+  ApolloClient, 
+  InMemoryCache, 
+  ApolloProvider, 
+  HttpLink, 
+  from, 
+} from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
+import GetRaces from './components/GetRaces.js';
 
 const errorLink = onError(({ graphqlErrors, networkError }) => {
   if (graphqlErrors) {
     graphqlErrors.map(({ message, location, path }) => {
       alert(`Graphql error ${message}`);
-    })
+    });
   }
-})
+});
 
 //Allows us to connect both the backend and frontend applications-------------------------
 const link = from([
   errorLink,
-  new HttpLink({ uri: "http://localhost:6969/graphql" })
+  new HttpLink({ uri: "http://localhost:5000/graphql" }),
 ]);
 //----------------------------------------------------------------------------------------
 
@@ -44,6 +45,8 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
+      {" "}
+      <GetRaces />
       <div>
         <BrowserRouter>
           <Routes>

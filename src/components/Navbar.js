@@ -1,5 +1,4 @@
 import { SearchBar } from './SearchBar.jsx';
-import { SearchResultsList } from './SearchResultsList.jsx';
 import { useState } from 'react';
 import { FaHome } from "react-icons/fa";
 
@@ -13,8 +12,7 @@ export default function Navbar() {
     <nav className="nav">
         <div className="App">
             <div className="search-bar-container">
-            <SearchBar setResults={setResults}/>
-            <SearchResultsList results={results}/>
+            <SearchBar setResults={setResults} />
          </div>
     </div>
         <ul>
