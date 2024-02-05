@@ -9,17 +9,17 @@ export default function Navbar() {
     const [results, setResults] = useState([]);
 
     return (
-    <nav className="nav">
-        <div className="App">
-            <div className="search-bar-container">
-            <SearchBar setResults={setResults} />
-         </div>
-    </div>
-        <ul>
-            <li>
-                <a href="/home"><FaHome /></a>
-            </li>
-        </ul>
-    </nav>
+        <nav className="nav">
+            <div className="App">
+                <div className="search-bar-container">
+                <SearchBar setResults={setResults} />
+                </div>
+        </div>
+            <ul>
+                <li>
+                    <a href="/home"><FaHome /></a>
+                </li>
+            </ul>
+        </nav>
     )
 }

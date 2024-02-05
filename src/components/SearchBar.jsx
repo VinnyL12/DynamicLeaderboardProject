@@ -1,27 +1,15 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { useLazyQuery, gql } from "@apollo/client";
-
-import {FaSearch} from 'react-icons/fa'
+import { FaSearch } from 'react-icons/fa'
 import './SearchBar.css';
+import { useNavigate } from 'react-router-dom';
 
 export const SearchBar = ({ results, setResults }) => {
     const [input, setInput] = useState("")
+    const navigate = useNavigate();
 
     useEffect(() => {
-        fetch("https://jsonplaceholder.typicode.com/users")
-        .then((response) =>response.json())
-        .then((json) => {
-            setResults(json)
-            // const results = json.filter((user) => {
-            //     return (
-            //         value && 
-            //         user && 
-            //         user.name && 
-            //         user.name.toLowerCase().includes(value)
-            //         );
-            //     });
-                //setResults(results);
-            });
+        //console.log('Use Effect Hit', input);
     }, [input])
     const handleChange = (value) => {
         setInput(value);
@@ -29,12 +17,14 @@ export const SearchBar = ({ results, setResults }) => {
 
     return (
         <div className="input-wrapper">
-            <FaSearch id="search-icon" /> 
-            <input
-                placeholder="Search for a Race" 
-                value={input}
-                onChange={(e) => handleChange(e.target.value)}
-            />
+            <FaSearch id="search-icon" />
+            <form onSubmit={(_e) => navigate(`/races?name=${input}`)}>
+                <input
+                    placeholder="Search for a Race"
+                    value={input}
+                    onChange={(e) => handleChange(e.target.value)}
+                />
+            </form>
         </div>
     );
 };

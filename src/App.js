@@ -20,7 +20,6 @@ import {
   from, 
 } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
-import GetRaces from './components/GetRaces.js';
 
 const errorLink = onError(({ graphqlErrors, networkError }) => {
   if (graphqlErrors) {
@@ -46,7 +45,6 @@ function App() {
   return (
     <ApolloProvider client={client}>
       {" "}
-      <GetRaces />
       <div>
         <BrowserRouter>
           <Routes>
