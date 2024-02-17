@@ -18,6 +18,20 @@ body {
     padding: 0 1rem;
 }
 
+.advanced-nav {
+    background-color: #cccccc7e;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 2rem;
+    padding: 0 1rem;
+}
+
+.advanced.search {
+    color:black;
+}
+
 .site-title {
     font-size: 2rem;
 }

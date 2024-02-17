@@ -1,61 +1,59 @@
 import Header from "../components/Header"
 import Navbar from "../components/Navbar"
 import '../assets/Events.css';
-
-import fakeData from "../assets/MOCK_EVENT_DATA.json";
 import * as React from "react";
-import { useTable } from "react-table";
+import { GET_EVENTS } from "../GraphQL/Queries";
+import { useQuery } from "@apollo/client";
+import { useState } from "react";
+import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 function Events() {
 
-    const data = React.useMemo(() => fakeData, []);
-    const columns = React.useMemo(
-        () => [
-            {
-                Header: "Event",
-                accessor: "event_name",
-            },
-            {
-                Header: "Race",
-                accessor: "race_name",
-            },
-        ],
-        []
-    );
 
-    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-        useTable({ columns, data });
+    const urlParams = new URLSearchParams(window.location.search);
+    const race_id = urlParams.get("race_id");
+    let { state } = useLocation();
+
+    const [raceEvents, setRaceEvents] = useState(null);
+
+    const { loading, error, rData } = useQuery(GET_EVENTS, {
+        variables: {
+            race_id
+        },
+        onCompleted: (data) => { setRaceEvents(data); console.log(data) }
+    });
+
+    if(loading || !raceEvents) { return 'Loading...'; }
+    if(error) { return 'Error!'; }
+
+    //Put this below the div when you finish getting Hill and Bale search figured out
+    //<h2>{state.text}</h2>
 
     return (
         <>
             <Header />
-            <Navbar />
-            <div className="Events">
-                    <table {...getTableProps()}>
-                        <thead>
-                            {headerGroups.map((headerGroup) => (
-                                <tr {...headerGroup.getHeaderGroupProps()}>
-                                    {headerGroup.headers.map((column) => (
-                                        <th {...column.getHeaderProps()}>
-                                            {column.render("Header")}
-                                        </th>
-                                    ))}
+            <div>
+                <h2>{state.text}</h2>
+                <table className="events">
+                    <thead>
+                        <tr>
+                            <th>Event</th>
+                            <th>Start Time (Military)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            raceEvents.race_response.result.race.events.map((event) => {
+                                return <tr key={event.event_id}>
+                                    <td><Link to={"/resultset"}>{event.name}</Link></td>
+                                    <td>{event.start_time}</td>
                                 </tr>
-                            ))}
-                        </thead>
-                        <tbody {...getTableBodyProps()}>
-                            {rows.map((row) => {
-                                prepareRow(row);
-                                return (
-                                    <tr {...row.getRowProps()}>
-                                        {row.cells.map((cell) => (
-                                            <td {...cell.getCellProps()}> {cell.render("Cell")} </td>
-                                        ))}
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
+                            })
+                        }
+                    </tbody>
+                </table>
             </div>
         </>
     );

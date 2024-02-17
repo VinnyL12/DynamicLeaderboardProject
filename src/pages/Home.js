@@ -6,10 +6,12 @@ import runners1 from '../images/Runner1.jpg';
 import runners2 from '../images/Runner2.jpg';
 
 export default function Home() {
+
     return (
         <>
             <Header />
             <Navbar />
+
             <div>
                 <div className="column left">
                     <h2 align="center">Welcome to the RunSignup Dynamic Leaderboard!</h2>

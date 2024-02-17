@@ -6,10 +6,10 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from "./pages/Home";
 import Races from "./pages/Races";
 import Events from "./pages/Events";
+import ResultSet from './pages/ResultSet.js';
 import IndividualResults from './pages/IndividualResults';
 import TeamResults from './pages/TeamResults';
 import NoPage from './pages/NoPage';
-import Navbar from './components/Navbar';
 import RegionFilterPage from './pages/RegionFilterPage.js';
 
 import { 
@@ -53,6 +53,7 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/races" element={<Races />} />
             <Route path="/events" element={<Events />} />
+            <Route path="/resultset" element={<ResultSet />} />
             <Route path="/individual" element={<IndividualResults />} />
             <Route path="/team" element={<TeamResults />} />
             <Route path="*" element={<NoPage />} />

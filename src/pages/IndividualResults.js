@@ -1,88 +1,69 @@
 import Header from "../components/Header"
 import Navbar from "../components/Navbar"
 import '../assets/Events.css';
-
-
-import fakeData from "../assets/MOCK_INDIVIDUAL_DATA.json";
 import * as React from "react";
-import { useTable } from "react-table";
 import IndividualTeamHeader from "../components/IndividualTeamHeader";
+import { useQuery } from "@apollo/client";
+import { useState } from "react";
+import { useLocation } from "react-router-dom";
+import { GET_INDIVIDUAL } from "../GraphQL/Queries";
 
 function IndividualResults() {
 
-    const data = React.useMemo(() => fakeData, []);
-    const columns = React.useMemo(
-        () => [
-            {
-                Header: "Finish Place",
-                accessor: "finish_place",
-            },
-            {
-                Header: "Score",
-                accessor: "score",
-            },
-            {
-                Header: "Name",
-                accessor: "racer_name",
-            },
-            {
-                Header: "Grade",
-                accessor: "grade",
-            },
-            {
-                Header: "Bib",
-                accessor: "bib",
-            },
-            {
-                Header: "Team",
-                accessor: "team",
-            },
-            {
-                Header: "Finish Time",
-                accessor: "finish_time",
-            },
-            {
-                Header: "Pace",
-                accessor: "pace",
-            },
-        ],
-        []
-    );
+    const urlParams = new URLSearchParams(window.location.search);
+    const race_id = urlParams.get("race_id");
+    const event_id = urlParams.get("event_id");
 
-    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-        useTable({ columns, data });
+    let { state } = useLocation();
+
+    const [individualResults, setIndividualResults] = useState(null);
+
+    const { loading, error, rData } = useQuery(GET_INDIVIDUAL, {
+        variables: {
+            race_id,
+            event_id
+        },
+        onCompleted: (data) => { setIndividualResults(data); console.log(data) }
+    });
+
+    if (loading || !individualResults) { return 'Loading...'; }
+    if (error) { return 'Error!'; }
 
     return (
         <>
             <Header />
             <Navbar />
             <IndividualTeamHeader />
-            <div className="Events">
-                    <table {...getTableProps()}>
-                        <thead>
-                            {headerGroups.map((headerGroup) => (
-                                <tr {...headerGroup.getHeaderGroupProps()}>
-                                    {headerGroup.headers.map((column) => (
-                                        <th {...column.getHeaderProps()}>
-                                            {column.render("Header")}
-                                        </th>
-                                    ))}
+            <div>
+                <table className="events">
+                    <thead>
+                        <tr>
+                            <th>Place</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Grade</th>
+                            <th>Bib</th>
+                            <th>Team</th>
+                            <th>Finish Time</th>
+                            <th>Pace</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            individualResults.individual_results.result.individual_results_sets.map((individual) => {
+                                return <tr key={individual.individual_result_set_id}>
+                                    <td>{individual.bib}</td>
+                                    <td>{individual.chip_time}</td>
+                                    <td>{individual.clock_time}</td>
+                                    <td>{individual.first_name}</td>
+                                    <td>{individual.last_name}</td>
+                                    <td>{individual.pace}</td>
+                                    <td>{individual.place}</td>
                                 </tr>
-                            ))}
-                        </thead>
-                        <tbody {...getTableBodyProps()}>
-                            {rows.map((row) => {
-                                prepareRow(row);
-                                return (
-                                    <tr {...row.getRowProps()}>
-                                        {row.cells.map((cell) => (
-                                            <td {...cell.getCellProps()}> {cell.render("Cell")} </td>
-                                        ))}
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
+                            })
+                        }
+                    </tbody>
+                </table>
             </div>
         </>
     );

@@ -1,78 +1,82 @@
 import Header from "../components/Header"
 import Navbar from "../components/Navbar"
 import '../assets/Races.css';
-
-import fakeData from "../assets/MOCK_RACE_DATA.json";
 import * as React from "react";
-import { useTable } from "react-table";
-//import RegionFilter from "../components/RegionFilter";
-
-import { GET_RACES } from "../GraphQL/Queries";
+import { GET_ADVANCED_RACES, GET_RACES } from "../GraphQL/Queries";
 import { useQuery } from "@apollo/client";
-import { useWatchQueryOptions } from "@apollo/client/react/hooks/useSuspenseQuery";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+//import { name } from "ejs";
 
-//import { useQuery, gql } from "@apollo/client";
-//import { GET_RACES } from '../GraphQL/Queries';
-{/*
-function getRaces(name) {
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const searchQuery = urlParams.get("search");
-
-    const {error, loading, data} = useQuery(GET_RACES, {
-        variables: {
-            name: searchQuery,
-            country_code: searchQuery,
-            state: searchQuery,
-            city: searchQuery
-        }
-    })
-
-}
-*/}
+//let name = null;
 
 function Races() {
-    //const searchQuery = urlParams.get("search");
     const urlParams = new URLSearchParams(window.location.search);
     const name = urlParams.get("name");
+
+    let formattedName = name.replace(/ /g, "+");
+    console.log(formattedName);
+
+    let queryVars = { name: formattedName };
     const [data, setData] = useState(null);
 
-    const { loading, error, rData} = useQuery(GET_RACES, {
+    if (urlParams.get("start_date")) {
+        const startDate = urlParams.get("start_date");
+        queryVars = {
+            ...queryVars,
+            startDate
+        }
+    }
+    if (urlParams.get("country")) {
+        const country = urlParams.get("country");
+        queryVars = {
+            ...queryVars,
+            country
+        }
+    }
+    if (urlParams.get("state")) {
+        const state = urlParams.get("state");
+        queryVars = {
+            ...queryVars,
+            state
+        }
+    }
+    if (urlParams.get("city")) {
+        const city = urlParams.get("city");
+        queryVars = {
+            ...queryVars,
+            city
+        }
+    }
+
+    const { loading, error, _rdata } = useQuery(GET_ADVANCED_RACES, {
+        skip: urlParams.size <= 1,
+        variables: queryVars,
+        onCompleted: (data) => { setData(data); }
+    });
+
+    const { loadingNormal, errorNormal, _data } = useQuery(GET_RACES, {
+        skip: urlParams.size > 1,
         variables: {
-            name
+            name: formattedName
         },
         onCompleted: (data) => { setData(data); }
     });
 
-    if(loading || !data) { return 'Loading...'; }
-    if(error) { return 'Error!'; }
-
-    // const asdf = React.useMemo(() => fakeData, []);
-    // const columns = React.useMemo(
-    //     () => [
-    //         {
-    //             Header: "ID",
-    //             accessor: "race_id",
-    //         },
-    //         {
-    //             Header: "Race",
-    //             accessor: "name",
-    //         },
-    //     ],
-    //     []
-    // );
+    if (loading || loadingNormal || !data) { return 'Loading...'; }
+    if (error || errorNormal) { return 'Error!'; }
 
     return (
         <>
             <Header />
             <Navbar />
             <div>
-                <table>
+                <table className="races">
                     <thead>
                         <tr>
-                            <th>Race ID</th>
                             <th>Race Name</th>
+                            <th>State</th>
+                            <th>City</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -80,8 +84,9 @@ function Races() {
                             data.response.result.races.map((race) => {
                                 console.log(race);
                                 return <tr key={race.race.race_id}>
-                                    <td>{race.race.race_id}</td>
-                                    <td>{race.race.name}</td>
+                                    <td><Link to={"/events?race_id=" + race.race.race_id} state={{ text: race.race.name }}>{race.race.name}</Link></td>
+                                    <td>{race.race.address.state}</td>
+                                    <td>{race.race.address.city}</td>
                                 </tr>
                             })
                         }
