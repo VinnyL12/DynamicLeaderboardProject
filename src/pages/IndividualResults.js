@@ -11,19 +11,19 @@ import { GET_INDIVIDUAL } from "../GraphQL/Queries";
 function IndividualResults() {
 
     const urlParams = new URLSearchParams(window.location.search);
+    const individual_result_set_id = urlParams.get("individual_result_set_id");
+
     const race_id = urlParams.get("race_id");
     const event_id = urlParams.get("event_id");
 
-    let { state } = useLocation();
-
-    const [individualResults, setIndividualResults] = useState(null);
+    const [individualResults, setIndividualResultSets] = useState(null);
 
     const { loading, error, rData } = useQuery(GET_INDIVIDUAL, {
         variables: {
             race_id,
             event_id
         },
-        onCompleted: (data) => { setIndividualResults(data); console.log(data) }
+        onCompleted: (data) => { setIndividualResultSets(data); console.log(data) }
     });
 
     if (loading || !individualResults) { return 'Loading...'; }
@@ -41,27 +41,15 @@ function IndividualResults() {
                             <th>Place</th>
                             <th>First Name</th>
                             <th>Last Name</th>
-                            <th>Grade</th>
                             <th>Bib</th>
-                            <th>Team</th>
                             <th>Finish Time</th>
-                            <th>Pace</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {
-                            individualResults.individual_results.result.individual_results_sets.map((individual) => {
-                                return <tr key={individual.individual_result_set_id}>
-                                    <td>{individual.bib}</td>
-                                    <td>{individual.chip_time}</td>
-                                    <td>{individual.clock_time}</td>
-                                    <td>{individual.first_name}</td>
-                                    <td>{individual.last_name}</td>
-                                    <td>{individual.pace}</td>
-                                    <td>{individual.place}</td>
-                                </tr>
-                            })
-                        }
+                        <tr key={individual_result_set_id}>
+                            <td>{individual_result_set_id}</td>
+                        </tr>
+
                     </tbody>
                 </table>
             </div>

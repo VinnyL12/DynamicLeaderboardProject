@@ -15,7 +15,7 @@ function Races() {
     const name = urlParams.get("name");
 
     let formattedName = name.replace(/ /g, "+");
-    console.log(formattedName);
+    //console.log(formattedName);
 
     let queryVars = { name: formattedName };
     const [data, setData] = useState(null);

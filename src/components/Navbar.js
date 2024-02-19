@@ -2,6 +2,7 @@ import { SearchBar } from './SearchBar.jsx';
 import { useState } from 'react';
 import { FaHome } from "react-icons/fa";
 import AdvancedSearch from './AdvancedSearch';
+import '../components/AdvancedSearch.css';
 
 import "../assets/App.css";
 
@@ -16,10 +17,12 @@ export default function Navbar() {
                 {searchChoice ?
                 <div>
                     <AdvancedSearch />
-                    <button onClick={(_e) => setSearchChoice(false)}>Close Advanced Search</button>
+                    <button className='button' onClick={(_e) => setSearchChoice(false)}>Close Advanced Search</button>
                 </div> :
                 <div>
                     <SearchBar />
+            
+
                     <button onClick={(_e) => setSearchChoice(true)}>Advanced Search</button>
                 </div>
             }

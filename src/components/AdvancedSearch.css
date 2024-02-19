@@ -1,0 +1,26 @@
+.advancedSearch {
+    background-color: white;
+    color: black;
+    padding: '10px 20px';
+    border-radius: 3px;
+    box-shadow: 0px 0px 5px 1px #EF4F9D;
+    cursor: 'pointer',
+}
+
+.form-container {
+    width: 900%;
+    display: flex;
+    flex-direction: row; /* Arrange children horizontally */
+  }
+  
+  .form-container label,
+  .form-container input {
+    margin-right: 5px; /* Add space between elements */
+    
+  }
+
+
+  .button-container {
+    display: flex;
+    justify-content: flex-end; /* Align items to the right */
+  }
