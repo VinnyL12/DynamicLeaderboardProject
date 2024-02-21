@@ -6,32 +6,29 @@ import { GET_ADVANCED_RACES, GET_RACES } from "../GraphQL/Queries";
 import { useQuery } from "@apollo/client";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-//import { name } from "ejs";
-
-//let name = null;
 
 function Races() {
     const urlParams = new URLSearchParams(window.location.search);
     const name = urlParams.get("name");
 
-    let formattedName = name.replace(/ /g, "+");
+    //let formattedName = name.replace(/ /g, "+");
     //console.log(formattedName);
 
-    let queryVars = { name: formattedName };
+    let queryVars = { name };
     const [data, setData] = useState(null);
 
     if (urlParams.get("start_date")) {
-        const startDate = urlParams.get("start_date");
+        const start_date = urlParams.get("start_date");
         queryVars = {
             ...queryVars,
-            startDate
+            start_date
         }
     }
-    if (urlParams.get("country")) {
-        const country = urlParams.get("country");
+    if (urlParams.get("country_code")) {
+        const country_code = urlParams.get("country_code")
         queryVars = {
             ...queryVars,
-            country
+            country_code
         }
     }
     if (urlParams.get("state")) {
@@ -52,15 +49,15 @@ function Races() {
     const { loading, error, _rdata } = useQuery(GET_ADVANCED_RACES, {
         skip: urlParams.size <= 1,
         variables: queryVars,
-        onCompleted: (data) => { setData(data); }
+        onCompleted: (data) => { setData(data); console.log(data); }
     });
 
     const { loadingNormal, errorNormal, _data } = useQuery(GET_RACES, {
         skip: urlParams.size > 1,
         variables: {
-            name: formattedName
+            name
         },
-        onCompleted: (data) => { setData(data); }
+        onCompleted: (data) => { setData(data); console.log(data); }
     });
 
     if (loading || loadingNormal || !data) { return 'Loading...'; }
@@ -81,7 +78,16 @@ function Races() {
                     </thead>
                     <tbody>
                         {
+                            data.response ?
                             data.response.result.races.map((race) => {
+                                console.log(race);
+                                return <tr key={race.race.race_id}>
+                                    <td><Link to={"/events?race_id=" + race.race.race_id} state={{ text: race.race.name }}>{race.race.name}</Link></td>
+                                    <td>{race.race.address.state}</td>
+                                    <td>{race.race.address.city}</td>
+                                </tr>
+                            }) :
+                            data.advancedResponse.result.races.map((race) => {
                                 console.log(race);
                                 return <tr key={race.race.race_id}>
                                     <td><Link to={"/events?race_id=" + race.race.race_id} state={{ text: race.race.name }}>{race.race.name}</Link></td>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { FaSearch } from 'react-icons/fa'
-import './SearchBar.css';
+//import './SearchBar.css';
+import '../assets/SearchBar.css';
 import { useNavigate } from 'react-router-dom';
 
 export const SearchBar = ({ results, setResults }) => {

@@ -1,39 +1,41 @@
 import Header from "../components/Header"
-import Navbar from "../components/Navbar"
 import '../assets/Events.css';
 import * as React from "react";
 import IndividualTeamHeader from "../components/IndividualTeamHeader";
 import { useQuery } from "@apollo/client";
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { GET_INDIVIDUAL } from "../GraphQL/Queries";
 
 function IndividualResults() {
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const individual_result_set_id = urlParams.get("individual_result_set_id");
+    let { state } = useLocation();
+    console.log(state);
 
-    const race_id = urlParams.get("race_id");
-    const event_id = urlParams.get("event_id");
+    const urlParams = useParams();
+    const race_event_id =  atob(urlParams.id);
 
-    const [individualResults, setIndividualResultSets] = useState(null);
+    const race_id = race_event_id.split("+")[0];
+    const event_id = race_event_id.split("+")[1];
+    const first_clicked_result = race_event_id.split("+")[2];
 
-    const { loading, error, rData } = useQuery(GET_INDIVIDUAL, {
-        variables: {
-            race_id,
-            event_id
-        },
-        onCompleted: (data) => { setIndividualResultSets(data); console.log(data) }
-    });
-
-    if (loading || !individualResults) { return 'Loading...'; }
-    if (error) { return 'Error!'; }
+    
 
     return (
         <>
             <Header />
-            <Navbar />
             <IndividualTeamHeader />
+            <div className="result-set-dropdown">
+                <select>
+                    {
+                        state.eachResultSet.map((set) => {
+                            <option value={set.individual_result_set_name} >
+                                {set.individual_result_set_name}
+                            </option>
+                        })
+                    }
+                </select>
+            </div>
             <div>
                 <table className="events">
                     <thead>
@@ -46,8 +48,8 @@ function IndividualResults() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr key={individual_result_set_id}>
-                            <td>{individual_result_set_id}</td>
+                        <tr key={race_event_id}>
+                            <td>{race_event_id}</td>
                         </tr>
 
                     </tbody>
