@@ -109,3 +109,5 @@ export const GET_INDIVIDUAL = gql`
 `
 
 
+
+

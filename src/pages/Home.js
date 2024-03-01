@@ -1,5 +1,7 @@
 import Header from "../components/Header"
 import Navbar from "../components/Navbar"
+import Footer from "../components/Footer"
+
 import '../assets/Home.css';
 
 import runners1 from '../images/Runner1.jpg';
@@ -31,7 +33,7 @@ export default function Home() {
                     <img src={runners2} alt="" class="center"></img>
                 </div>
             </div>
-
+            <Footer />
 
         </>
     )

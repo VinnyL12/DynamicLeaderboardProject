@@ -1,19 +1,18 @@
 import Header from "../components/Header"
-import Navbar from "../components/Navbar"
 import '../assets/Events.css';
-
 import * as React from "react";
-import { useTable } from "react-table";
 import IndividualTeamHeader from "../components/IndividualTeamHeader";
+import Footer from "../components/Footer";
+import { useLocation } from "react-router-dom";
 
 function TeamResults() {
-
+    const state = useLocation();
 
     return (
         <>
             <Header />
-            <Navbar />
-            <IndividualTeamHeader />
+            <IndividualTeamHeader state={state.state} individual_id={state.state.individual_id} />
+            <Footer />
         </>
     );
 }
