@@ -94,7 +94,7 @@ export default function AdvancedSearch() {
                 <div className='advancedSearch'>
                     <form class='moved-form' onSubmit={(e) => { e.preventDefault(); navigate(baseURL+parameters.join("&"))}}>
 
-                        <label for="city">Name:</label>
+                        <label for="name"><span className="asterisk">*</span>Name:</label>
                         <input value={selectedName} onChange={handleName} class="short-textbox" id="name" name="name"></input>
 
                         <label for="country_code">Country:</label>

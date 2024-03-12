@@ -22,6 +22,7 @@ table.events {
 th {
   border-radius: 5px;
   border-bottom: 3px solid #CCCCCC;
+  color: white;
   background-color: #EF4F9D;
   height: 70px;
 }
@@ -32,13 +33,32 @@ td {
 }
 
 .result-set-dropdown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dropbtn {
+  background-color: #EF4F9D;
+  padding: 8px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
   margin-top: 20px;
+  margin-bottom: 20px;
   text-align: center;
-  float: left;
-  width: 30%;
+  width: 10%;
+  display: inline-block;
+  border: none;
+}
+
+.result-set-dropdown-opened:focus {
+    outline: 1px solid #EF4F9D;
 }
 
 .race-name-sub-header {
+  color: white;
   background-color: #EF4F9D;
   margin-left: auto;
   padding: 0 1rem;

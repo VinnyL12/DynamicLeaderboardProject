@@ -53,7 +53,7 @@ function App() {
             <Route path="/events" element={<Events />} />
             <Route path="/resultset" element={<ResultSet />} />
             <Route path="/individual/:id" element={<IndividualResults />} />
-            <Route path="/team" element={<TeamResults />} />
+            <Route path="/team/:id" element={<TeamResults />} />
             <Route path="*" element={<NoPage />} />
           </Routes>
         </BrowserRouter>

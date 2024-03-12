@@ -1,9 +1,7 @@
 import Header from "../components/Header"
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
-
 import '../assets/Home.css';
-
 import runners1 from '../images/Runner1.jpg';
 import runners2 from '../images/Runner2.jpg';
 
@@ -23,7 +21,7 @@ export default function Home() {
                         <li><span><h4>From there, users can select the desired event they would like to view.</h4></span></li>
                         <li><span><h4>Upon selecting that event, users will be sent to the invidual race statistics page of the given event.</h4></span></li>
                         <li><span><h4>From there, users can navigate to the team statistics page as well.</h4></span></li>
-                        <li><span><h4>Respectively, each leaderboard can be enlarged and cast onto larger screens if the user desires.</h4></span></li>
+                        <li><span><h4>Respectively, each leaderboard can be enlarged and cast onto larger screens accordingly.</h4></span></li>
 
                     </ul>
                 </div>

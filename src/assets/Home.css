@@ -40,7 +40,7 @@
     text-align: left;
  }
 
-  ul.a {
+  .column.left > ul.a {
     list-style-type: square;
     color:#EF4F9D;
   }

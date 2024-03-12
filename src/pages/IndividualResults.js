@@ -21,9 +21,19 @@ function IndividualResults() {
     let { state } = useLocation();
     console.log(state);
 
+    let endpoint;
+    let team_result_set_name;
+    const hasElements = state.eachTeam.length >= 1;
+
     const race_id = race_event_id.split("+")[0];
     const event_id = race_event_id.split("+")[1];
     const first_clicked_result = race_event_id.split("+")[2];
+
+    if(hasElements) {
+        const firstResult = state.eachTeam[0];
+        team_result_set_name = firstResult.team_result_set_name;
+        endpoint = btoa(`${race_id}+${firstResult.team_result_set_id}`);
+    }
 
     const [resultSets, setResultSets] = useState(null);
     const [resultSet, setResultSet] = useState(null);
@@ -53,7 +63,7 @@ function IndividualResults() {
         { label: 'Home', link: '/' },
         { label: 'Races', link: state.racesLink },
         { label: 'Events', link: "/events?race_id=" + race_id },
-        { label: 'Result Sets', link: '/resultset?race_id=' +race_id + "&event_id=" + event_id },
+        { label: 'Result Sets', link: '/resultset?race_id=' + race_id + "&event_id=" + event_id },
         { label: 'Individual Results', link: '/individual' }
     ];
 
@@ -62,21 +72,28 @@ function IndividualResults() {
             <Header />
             <div className="race-name-sub-header">
                 <img className="race-logo" src={shoeIcon} alt=""></img>
-                <h2>{ state.name }</h2>
+                <h2>{state.name}</h2>
             </div>
-            <Breadcrumb items={breadcrumbItems} state={state}/>
-            <IndividualTeamHeader state={state} individual={true} individual_id={urlParams.id}/>
+            <Breadcrumb items={breadcrumbItems} state={state} />
+
+            {hasElements ?
+            <IndividualTeamHeader state={{...state, team_result_set_name }} individualClass={'individualteamcolumnleft selected'} teamClass={'individualteamcolumnright'} teamLink={`/team/${endpoint}`} individualLink={state.individualLink} race_id={race_id} individual_result_set_id={urlParams.individual_result_set_id} team_result_set_id={urlParams.team_result_set_id} />
+            :
+            <IndividualTeamHeader state={state} individualClass={'individualteamcolumnleft selected'} teamClass={'individualteamcolumnright'} teamDisabled={true} individualLink={state.individualLink} race_id={race_id} individual_result_set_id={urlParams.individual_result_set_id} team_result_set_id={urlParams.team_result_set_id} />
+            }
 
             <div className="result-set-dropdown">
-                <select value={first_clicked_result + "-" + state.name} onChange={(e) => { const result_set_data = e.target.value.split("-"); navigate(`./../${btoa(`${race_id}+${event_id}+${result_set_data[0]}`)}`, { state: { name: result_set_data[1] }}); window.location.reload(); }}>
-                    {
-                        resultSets.individual_results.result.individual_results_sets.map((set) => {
-                            return <option value={set.individual_result_set_id + "-" + set.individual_result_set_name}>
-                                {set.individual_result_set_name}
-                            </option>
-                        })
-                    }
-                </select>
+                <button className="dropbtn">
+                    <select className="result-set-dropdown-opened" value={first_clicked_result + "-" + state.name} onChange={(e) => { const result_set_data = e.target.value.split("-"); navigate(`./../${btoa(`${race_id}+${event_id}+${result_set_data[0]}`)}`, { state: { ...state, name: result_set_data[1] } }); window.location.reload(); }}>
+                        {
+                            resultSets.individual_results.result.individual_results_sets.map((set) => {
+                                return <option value={set.individual_result_set_id + "-" + set.individual_result_set_name}>
+                                    {set.individual_result_set_name}
+                                </option>
+                            })
+                        }
+                    </select>
+                </button>
             </div>
             <div>
                 <table className="events">

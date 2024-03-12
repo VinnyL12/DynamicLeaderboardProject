@@ -16,10 +16,11 @@ function ResultSet() {
     const urlParams = new URLSearchParams(window.location.search);
     const race_id = urlParams.get("race_id");
     const event_id = urlParams.get("event_id");
-    let { state } = useLocation();
-    console.log(state);
 
+    let { state } = useLocation();
+    console.log(state)
     const [resultSets, setResultSets] = useState(null);
+    console.log(resultSets);
 
     const { loading, error, rData } = useQuery(GET_INDIVIDUAL, {
         variables: {
@@ -58,7 +59,7 @@ function ResultSet() {
                         {
                             resultSets.individual_results.result.individual_results_sets.map((result_sets) => {
                                 return <tr key={result_sets.individual_result_set_id}>
-                                    <td><Link to={`/individual/${btoa(`${race_id}+${event_id}+${result_sets.individual_result_set_id}`)}`} state={{ ...state, eachResultSet: resultSets.individual_results.result.individual_results_sets, name: result_sets.individual_result_set_name }}>{result_sets.individual_result_set_name}</Link></td>
+                                    <td><Link to={`/individual/${btoa(`${race_id}+${event_id}+${result_sets.individual_result_set_id}`)}`} state={{ ...state, individualLink: `/individual/${btoa(`${race_id}+${event_id}+${result_sets.individual_result_set_id}`)}`, eachResultSet: resultSets.individual_results.result.individual_results_sets, eachTeam: resultSets.team_results_sets.result, name: result_sets.individual_result_set_name }}>{result_sets.individual_result_set_name}</Link></td>
                                 </tr>
                             })
                         }

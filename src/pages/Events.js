@@ -60,7 +60,7 @@ function Events() {
                             raceEvents.race_response.result.race.events.map((event) => {
                                 console.log(event);
                                 return <tr key={event.event_id}>
-                                    <td><Link to={"/resultset?race_id=" + race_id + "&event_id=" + event.event_id} state={{ ...state, text: event.name }}>{event.name}</Link></td>
+                                    <td><Link to={"/resultset?race_id=" + race_id + "&event_id=" + event.event_id} state={{ ...state, event_id: event.event_id, text: event.name }}>{event.name}</Link></td>
                                     <td>{event.start_time}</td>
                                 </tr>
                             })
