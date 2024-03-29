@@ -1,9 +1,10 @@
 import React from 'react';
-import "../assets/Breadcrumb.css"
-import caret from '../images/angles-left-solid.svg'
+import "../assets/Breadcrumb.css";
+import caret from '../images/angles-left-solid.svg';
 import { Link } from 'react-router-dom';
 
 const Breadcrumb = ({ items, state }) => {
+
     return (
         <div className="breadcrumb-container">
             <nav aria-label="breadcrumb">
@@ -11,14 +12,14 @@ const Breadcrumb = ({ items, state }) => {
                     {items.map((item, index) => (
                         <div className='list-item'>
                             {index !== 0 ?
-                                <img src={caret}></img> :
+                                <img className="sideCaret" src={caret}></img> :
                                 <></>
                             }
                             <li key={index} className="breadcrumb-item">
                                 {index === items.length - 1 ? (
                                     <span>{item.label}</span>
                                 ) : (
-                                    <Link to={item.link} state={state}>{item.label}</Link>
+                                    <Link onClick={item.disconnectHandler || null} to={item.link} state={state}>{item.label}</Link>
                                 )}
                             </li>
                         </div>

@@ -17,6 +17,18 @@ table.events {
   text-align: center;
   vertical-align: middle;
   margin-bottom: 50px;
+  margin-top: 10px;
+}
+
+table.events-results {
+  margin: 0px auto;
+  margin-top: 50px;
+  border-radius: 10px;
+  width: 75%;
+  text-align: center;
+  vertical-align: middle;
+  margin-bottom: 50px;
+  margin-top: 10px;
 }
 
 th {
@@ -29,32 +41,16 @@ th {
 
 td {
   height: 50px;
-  border-bottom: 2px solid #CCCCCC;
+  border-radius: 5px;
+  border-bottom: 3px solid #CCCCCC
 }
 
-.result-set-dropdown {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.events-results tr:nth-child(odd) {
+  background-color: #F7F7F7;
 }
 
-.dropbtn {
-  background-color: #EF4F9D;
-  padding: 8px;
-  font-size: 16px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  text-align: center;
-  width: 10%;
-  display: inline-block;
-  border: none;
-}
-
-.result-set-dropdown-opened:focus {
-    outline: 1px solid #EF4F9D;
+.events-results tr:nth-child(even) {
+  background-color: #cccccc7e;
 }
 
 .race-name-sub-header {
@@ -62,7 +58,6 @@ td {
   background-color: #EF4F9D;
   margin-left: auto;
   padding: 0 1rem;
-  margin-bottom: auto;
   width: 100%;
   display: flex;
 }
@@ -74,4 +69,97 @@ td {
   border-radius: 3px;
   margin-top: 9px;
   margin-right: 20px;
+}
+
+.outer-layer {
+  padding: 0px 100px 0px 100px;
+}
+
+.select-container {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  min-width: 250px;
+  height: 50px;
+}
+
+.select-container .icon-container {
+  width: 50px;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.select-box {
+  border: none;
+  border-radius: 5px;
+  width: 25%;
+  padding: 0 30px 0 15px;
+  font-size: 16px;
+  background-color: #cccccc7e;
+}
+
+option {
+  background-color: white;
+}
+
+option:checked {
+  background-color: #cccccc7e;
+}
+
+.icon-container .downCaret {
+  width: 5px;
+  color: white;
+}
+
+.autoscroll-wrapper {
+  margin-top: 10px;
+  display: flex;
+  justify-content: left;
+  margin-left: 60px;
+  align-items: center;
+  text-align: center;
+}
+
+input[type="checkbox"] {
+  position: relative;
+  width: 25px;
+  height: 25px;
+  background-color: #CCCCCC;
+  border-radius: .25rem;
+  appearance: none;
+  cursor: pointer;
+
+}
+
+input[type="checkbox"]:checked {
+  background-color: #EF4F9D;
+}
+
+input[type="checkbox"]::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 9px;
+  width: 5px;
+  height: 13px;
+  border: 4px solid transparent;
+  border-left: none;
+  border-top: none;
+  transform: rotate(45deg) scale(1);
+}
+
+input[type="checkbox"]:checked:before {
+  border-color: #fff;
+  animation: checkAnim .2s ease;
+}
+
+@keyframes checkAnim {
+  from {
+    transform: rotate(45deg) scale(0);
+  }
 }

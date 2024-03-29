@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
-import { FaSearch } from 'react-icons/fa'
-//import './SearchBar.css';
 import '../assets/SearchBar.css';
+import { FaSearch } from 'react-icons/fa';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export const SearchBar = ({ results, setResults }) => {
+export const SearchBar = () => {
     const [input, setInput] = useState("")
 
     const navigate = useNavigate();
@@ -12,8 +11,6 @@ export const SearchBar = ({ results, setResults }) => {
     const handleChange = (value) => {
         setInput(value);
     };
-
-
 
     return (
         <div className="search">

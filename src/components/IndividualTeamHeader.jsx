@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
 import '../assets/IndividualTeamHeader.css';
+import { Link } from 'react-router-dom';
 
 export default function IndividualTeamHeader({ individualClass, teamClass, state, teamDisabled, teamLink, individualLink, race_id, individual_id }) {
     console.log(race_id);

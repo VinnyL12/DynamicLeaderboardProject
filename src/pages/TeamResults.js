@@ -1,8 +1,8 @@
-import Header from "../components/Header"
+import Header from "../components/Header";
+import Breadcrumb from "../components/Breadcrumb";
+import AutoScroll from "../components/AutoScroll";
 import IndividualTeamHeader from "../components/IndividualTeamHeader";
 import Footer from "../components/Footer";
-import Breadcrumb from "../components/Breadcrumb";
-
 import '../assets/Events.css';
 import * as React from "react";
 import { useLocation } from "react-router-dom";
@@ -28,8 +28,10 @@ function TeamResults() {
     const team_result_set_id = race_team_id.split("+")[1];
 
     const [team, setTeam] = useState(null);
+    const [isAutoScroll, setAutoScroll] = useState(false);
 
-    const { loading, error, rData } = useQuery(GET_TEAM, {
+
+    const { loading, error, rData, refetch } = useQuery(GET_TEAM, {
         variables: {
             race_id,
             team_result_set_id
@@ -45,58 +47,76 @@ function TeamResults() {
         { label: 'Races', link: state.racesLink },
         { label: 'Events', link: "/events?race_id=" + race_id },
         { label: 'Result Sets', link: '/resultset?race_id=' + race_id + "&event_id=" + state.event_id },
-        { label: 'Individual Results', link: '/individual' }
+        { label: 'Results'}
     ];
 
+    const disconnectHandler = () => {
+        fetch('http://localhost:5000/disconnect', {
+            method: "POST",
+            body: {
+                race_id,
+                event_id: state.event_id
+            }
+        });
+    }
+
+    const handleCheckbox = (event) => {
+        setAutoScroll(event.target.checked);
+        console.log(isAutoScroll);
+    }
+
     return (
-        <>
-            <div className="wrapper">
-                <Header />
-                <div className="race-name-sub-header">
-                    <img className="race-logo" src={shoeIcon} alt=""></img>
-                    <h2>{state.team_result_set_name}</h2>
+        <div className="wrapper">
+            <AutoScroll enabled={isAutoScroll} onBottom={() => refetch()} />
+            <Header disconnectCallback={disconnectHandler} />
+            <div className="race-name-sub-header">
+                <img className="race-logo" src={shoeIcon} alt=""></img>
+                <h2>{state.team_result_set_name}</h2>
+            </div>
+            <Breadcrumb items={breadcrumbItems} state={state} />
+            <IndividualTeamHeader individualClass={'individualteamcolumnleft'} teamClass={'individualteamcolumnright selected'} state={state} individualLink={state.individualLink} />
+            <div className="autoscroll-wrapper">
+                Enable Auto Scroll: <input type="checkbox" onChange={handleCheckbox}></input>
+            </div>
+            <body className="outer-layer">
+                <div className="select-container">
+                    <select className="select-box" value={team_result_set_id + "+" + state.team_result_set_name} onChange={(e) => { const result_set_data = e.target.value.split('+'); navigate(`./../${btoa(`${race_id}+${result_set_data[0]}`)}`, { state: { ...state, team_result_set_name: result_set_data[1] } }); window.location.reload(); }}>
+                        {
+                            state.eachTeam.map((set) => {
+                                return <option value={set.team_result_set_id + '+' + set.team_result_set_name}>
+                                    {set.team_result_set_name}
+                                </option>
+                            })
+                        }
+                    </select>
                 </div>
-                <Breadcrumb items={breadcrumbItems} state={state} />
-                <IndividualTeamHeader individualClass={'individualteamcolumnleft'} teamClass={'individualteamcolumnright selected'} state={state} individualLink={state.individualLink} />
-                <div className="result-set-dropdown">
-                    <button className="dropbtn">
-                        <select className="result-set-dropdown-opened" value={team_result_set_id + "+" + state.team_result_set_name} onChange={(e) => { const result_set_data = e.target.value.split('+'); navigate(`./../${btoa(`${race_id}+${result_set_data[0]}`)}`, { state: { ...state, team_result_set_name: result_set_data[1] } }); window.location.reload(); }}>
-                            {
-                                state.eachTeam.map((set) => {
-                                    return <option value={set.team_result_set_id + '+' + set.team_result_set_name}>
-                                        {set.team_result_set_name}
-                                    </option>
-                                })
-                            }
-                        </select>
-                    </button>
-                </div>
-                <div>
-                    <table className="events">
-                        <thead>
-                            <tr>
-                                <th>Place</th>
-                                <th>Team Name</th>
-                                <th>Final Score</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                team.team_scores.result.map((team) => {
-                                    console.log(team);
-                                    return <tr key={team.results_team_id}>
-                                        <td>{team.place}</td>
-                                        <td>{team.results_team_name}</td>
-                                        <td>{team.score}</td>
-                                    </tr>
-                                })
-                            }
-                        </tbody>
-                    </table>
-                </div>
+            </body>
+            
+            <div>
+                <table className="events-results">
+                    <thead>
+                        <tr>
+                            <th>Place</th>
+                            <th>Team Name</th>
+                            <th>Final Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            team.team_scores.result.map((team) => {
+                                console.log(team);
+                                return <tr key={team.results_team_id}>
+                                    <td>{team.place}</td>
+                                    <td>{team.results_team_name}</td>
+                                    <td>{team.score}</td>
+                                </tr>
+                            })
+                        }
+                    </tbody>
+                </table>
             </div>
             <Footer />
-        </>
+        </div>
     );
 }
 

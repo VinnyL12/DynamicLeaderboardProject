@@ -1,9 +1,7 @@
-import Header from "../components/Header"
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 import Breadcrumb from "../components/Breadcrumb";
-
-import '../assets/Races.css';
+import '../assets/Events.css';
 import * as React from "react";
 import { GET_ADVANCED_RACES, GET_RACES } from "../GraphQL/Queries";
 import { useQuery } from "@apollo/client";
@@ -14,9 +12,6 @@ function Races() {
     const state = useLocation();
     const urlParams = new URLSearchParams(window.location.search);
     const name = urlParams.get("name");
-
-    //let formattedName = name.replace(/ /g, "+");
-    //console.log(formattedName);
 
     let queryVars = { name };
     const [data, setData] = useState(null);
@@ -72,14 +67,12 @@ function Races() {
         { label: 'Races', link: state.racesLink },
     ];
 
-
     return (
         <div className="wrapper">
             <Header />
-            <Navbar />
             <Breadcrumb items={breadcrumbItems} state={state} />
             <div>
-                <table className="races">
+                <table className="events">
                     <thead>
                         <tr>
                             <th>Race Name</th>

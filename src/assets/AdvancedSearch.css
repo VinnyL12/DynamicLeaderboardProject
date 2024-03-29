@@ -19,7 +19,6 @@
     
   }
 
-
   .button-container {
     display: flex;
     justify-content: flex-end;
@@ -45,19 +44,18 @@
   }
 
   .styled-dropdown {
-    padding: 5px; /* Add padding to the dropdown */
-    font-size: 12px; /* Set font size */
-    border: 1px solid #ccc; /* Add border */
-    border-radius: 5px; /* Add rounded corners */
-    background-color: #fff; /* Set background color */
-    color: #333; /* Set text color */
+    padding: 5px;
+    font-size: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
   }
   
-  /* Style dropdown options */
   .styled-dropdown option {
-    padding: 10px; /* Add padding to options */
-    background-color: #fff; /* Set background color */
-    color: #333; /* Set text color */
+    padding: 10px;
+    background-color: #fff;
+    color: #333;
   }
   
   .asterisk {

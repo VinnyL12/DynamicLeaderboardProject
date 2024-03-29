@@ -9,7 +9,6 @@ import Events from "./pages/Events";
 import ResultSet from './pages/ResultSet.js';
 import IndividualResults from './pages/IndividualResults';
 import TeamResults from './pages/TeamResults';
-import NoPage from './pages/NoPage';
 
 import { 
   ApolloClient, 
@@ -54,7 +53,6 @@ function App() {
             <Route path="/resultset" element={<ResultSet />} />
             <Route path="/individual/:id" element={<IndividualResults />} />
             <Route path="/team/:id" element={<TeamResults />} />
-            <Route path="*" element={<NoPage />} />
           </Routes>
         </BrowserRouter>
       </div>

@@ -10,7 +10,6 @@ export default function AdvancedSearch() {
 
     const navigate = useNavigate();
 
-
     const baseURL = `/races?`;
     const [parameters, setParameters] = useState([]);
 
@@ -138,12 +137,6 @@ export default function AdvancedSearch() {
                     </form>
                 </div>
             </div>
-
-
-
-
-
-
         </div>
     );
 };

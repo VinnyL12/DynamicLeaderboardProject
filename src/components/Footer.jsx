@@ -1,5 +1,5 @@
-import rLogo from '../images/r-logo.png';
 import '../assets/Footer.css';
+import rLogo from '../images/r-logo.png';
 
 export default function Footer() {
     return (

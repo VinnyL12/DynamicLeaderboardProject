@@ -129,7 +129,3 @@ query fetchTeamResultsSets($race_id: long!, $team_result_set_id: long!) {
   }
 }
 `
-
-
-
-

@@ -1,15 +1,14 @@
 import Header from "../components/Header"
-import Footer from "../components/Footer"
 import Breadcrumb from "../components/Breadcrumb";
-
+import Footer from "../components/Footer"
 import '../assets/Events.css';
+import shoeIcon from '../images/Shoe-Icon1.jpg';
 import * as React from "react";
 import { useQuery } from "@apollo/client";
 import { useState } from "react";
 import { GET_INDIVIDUAL } from "../GraphQL/Queries";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import shoeIcon from '../images/Shoe-Icon1.jpg';
 
 function ResultSet() {
 
@@ -33,10 +32,20 @@ function ResultSet() {
     if (loading || !resultSets) { return 'Loading...'; }
     if (error) { return 'Error!'; }
 
+    const disconnectHandler = () => {
+        fetch('http://localhost:5000/disconnect', {
+            method: "POST",
+            body: {
+                race_id,
+                event_id
+            }
+        });
+    }
+
     const breadcrumbItems = [
-        { label: 'Home', link: '/' },
-        { label: 'Races', link: state.racesLink },
-        { label: 'Events', link: "/events?race_id=" + race_id },
+        { label: 'Home', link: '/', disconnectHandler },
+        { label: 'Races', link: state.racesLink, disconnectHandler },
+        { label: 'Events', link: "/events?race_id=" + race_id, disconnectHandler },
         { label: 'Result Sets', link: '/resultset?race_id=' +race_id + "&event_id=" + event_id },
     ];
 

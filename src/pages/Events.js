@@ -1,22 +1,21 @@
-import Header from "../components/Header"
-import Footer from "../components/Footer"
+import Header from "../components/Header";
 import Breadcrumb from "../components/Breadcrumb";
-
+import Footer from "../components/Footer";
 import '../assets/Events.css';
+import shoeIcon from '../images/Shoe-Icon1.jpg';
 import * as React from "react";
 import { GET_EVENTS } from "../GraphQL/Queries";
 import { useQuery } from "@apollo/client";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
-import shoeIcon from '../images/Shoe-Icon1.jpg';
 
 function Events() {
 
     const urlParams = new URLSearchParams(window.location.search);
     const race_id = urlParams.get("race_id");
     let { state } = useLocation();
-    console.log(state);
+    //console.log(state);
 
     const [raceEvents, setRaceEvents] = useState(null);
 
@@ -26,7 +25,6 @@ function Events() {
         },
         onCompleted: (data) => { setRaceEvents(data); console.log(data) }
     });
-
     if (loading || !raceEvents) { return 'Loading...'; }
     if (error) { return 'Error!'; }
 
@@ -35,9 +33,6 @@ function Events() {
         { label: 'Races', link: state.racesLink },
         { label: 'Events', link: "/events?race_id=" + race_id },
     ];
-
-    //Put this below the div when you finish getting Hill and Bale search figured out
-    //<h2>{state.text}</h2>
 
     return (
         <div className="wrapper">
