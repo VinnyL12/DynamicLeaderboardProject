@@ -19,7 +19,7 @@ const Breadcrumb = ({ items, state }) => {
                                 {index === items.length - 1 ? (
                                     <span>{item.label}</span>
                                 ) : (
-                                    <Link onClick={item.disconnectHandler || null} to={item.link} state={state}>{item.label}</Link>
+                                    <Link to={item.link} state={state}>{item.label}</Link>
                                 )}
                             </li>
                         </div>

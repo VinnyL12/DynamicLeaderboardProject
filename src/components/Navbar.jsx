@@ -2,7 +2,6 @@ import { SearchBar } from './SearchBar.jsx';
 import AdvancedSearch from './AdvancedSearch.jsx';
 import '../assets/AdvancedSearch.css';
 import "../assets/App.css";
-import { FaHome } from "react-icons/fa";
 import { useState } from 'react';
 
 export default function Navbar() {
@@ -24,11 +23,6 @@ export default function Navbar() {
                     }
                 </div>
             </div>
-            <ul>
-                <li>
-                    <a href="/home"><FaHome /></a>
-                </li>
-            </ul>
         </nav>
     )
 }

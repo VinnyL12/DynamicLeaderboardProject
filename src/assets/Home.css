@@ -13,6 +13,10 @@
   margin-bottom: 20px;
 }
 
+h4 {
+  padding-right: 10px;
+}
+
 .column-right {
   display: block;
   background-color: #F6F5F5;
@@ -43,6 +47,10 @@
 li span {
   color: black;
   text-align: left;
+}
+
+li::marker {
+  color:#EF4F9D;
 }
 
 ul {

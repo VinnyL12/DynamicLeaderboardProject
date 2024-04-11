@@ -30,7 +30,7 @@ const errorLink = onError(({ graphqlErrors, networkError }) => {
 //Allows us to connect both the backend and frontend applications-------------------------
 const link = from([
   errorLink,
-  new HttpLink({ uri: "http://localhost:5000/graphql" }),
+  new HttpLink({ uri: "http://10.71.56.168:5000/graphql" }),
 ]);
 //----------------------------------------------------------------------------------------
 

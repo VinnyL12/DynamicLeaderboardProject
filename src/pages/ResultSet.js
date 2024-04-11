@@ -32,20 +32,10 @@ function ResultSet() {
     if (loading || !resultSets) { return 'Loading...'; }
     if (error) { return 'Error!'; }
 
-    const disconnectHandler = () => {
-        fetch('http://localhost:5000/disconnect', {
-            method: "POST",
-            body: {
-                race_id,
-                event_id
-            }
-        });
-    }
-
     const breadcrumbItems = [
-        { label: 'Home', link: '/', disconnectHandler },
-        { label: 'Races', link: state.racesLink, disconnectHandler },
-        { label: 'Events', link: "/events?race_id=" + race_id, disconnectHandler },
+        { label: 'Home', link: '/' },
+        { label: 'Races', link: state.racesLink },
+        { label: 'Events', link: "/events?race_id=" + race_id },
         { label: 'Result Sets', link: '/resultset?race_id=' +race_id + "&event_id=" + event_id },
     ];
 

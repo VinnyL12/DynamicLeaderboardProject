@@ -10,6 +10,8 @@ import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { GET_INDIVIDUAL } from "../GraphQL/Queries";
+import { GET_UPDATED_INDIVIDUAL } from "../GraphQL/Queries";
+
 import shoeIcon from '../images/Shoe-Icon1.jpg';
 
 function IndividualResults() {
@@ -39,21 +41,32 @@ function IndividualResults() {
     const [isAutoScroll, setAutoScroll] = useState(false);
 
     let tempResultSet = null;
+    let [isLoaded, setIsLoaded] = useState(false);
+    const [isOnBottom, setIsOnBottom] = useState(false);
 
     const handleCompletion = (data) => {
         setResultSets(data);
-        tempResultSet = data.individual_results.result.individual_results_sets.find(set => set.individual_result_set_id === parseInt(first_clicked_result));
+        tempResultSet = data.result.individual_results_sets.find(set => set.individual_result_set_id === parseInt(first_clicked_result));
 
         setResultSet(tempResultSet);
     }
 
-    //console.log("Result Set:", resultSet);
-    const { loading, error, rData, refetch } = useQuery(GET_INDIVIDUAL, {
+    const { loading, error, rData } = useQuery(GET_INDIVIDUAL, {
         variables: {
             race_id,
             event_id
         },
-        onCompleted: (data) => { handleCompletion(data); }
+        onCompleted: (data) => { setIsLoaded(true); handleCompletion(data.individual_results); console.log(data) },
+        skip: isLoaded
+    });
+
+    const { refetch } = useQuery(GET_UPDATED_INDIVIDUAL, {
+        variables: {
+            race_id,
+            event_id
+        },
+        onCompleted: (data) => { handleCompletion(data.frontend_call); console.log(data) },
+        skip: !isLoaded || !isOnBottom
     });
 
     if (loading || !resultSets || !resultSet) { return 'Loading...'; }
@@ -67,16 +80,6 @@ function IndividualResults() {
         { label: 'Results' }
     ];
 
-    const disconnectHandler = () => {
-        fetch('http://localhost:5000/disconnect', {
-            method: "POST",
-            body: {
-                race_id,
-                event_id
-            }
-        });
-    }
-
     const handleCheckbox = (event) => {
         setAutoScroll(event.target.checked);
         console.log(isAutoScroll);
@@ -84,27 +87,31 @@ function IndividualResults() {
 
     return (
         <div className="wrapper">
-            <AutoScroll enabled={isAutoScroll} onBottom={() => refetch()} />
-            <Header disconnectCallback={disconnectHandler} />
+            <AutoScroll enabled={isAutoScroll} onBottom={() => { setIsOnBottom(true); refetch() }} />
+            <Header/>
             <div className="race-name-sub-header">
                 <img className="race-logo" src={shoeIcon} alt=""></img>
                 <h2>{state.name}</h2>
             </div>
-            <Breadcrumb disconnectCallback={disconnectHandler} items={breadcrumbItems} state={state} />
 
-            {hasElements ?
-                <IndividualTeamHeader state={{ ...state, team_result_set_name }} individualClass={'individualteamcolumnleft selected'} teamClass={'individualteamcolumnright'} teamLink={`/team/${endpoint}`} individualLink={state.individualLink} race_id={race_id} individual_result_set_id={urlParams.individual_result_set_id} team_result_set_id={urlParams.team_result_set_id} />
-                :
-                <IndividualTeamHeader state={state} individualClass={'individualteamcolumnleft selected'} teamClass={'individualteamcolumnright'} teamDisabled={true} individualLink={state.individualLink} race_id={race_id} individual_result_set_id={urlParams.individual_result_set_id} team_result_set_id={urlParams.team_result_set_id} />
-            }
+            <div className="combined-headers">
+                <Breadcrumb items={breadcrumbItems} state={state} />
+
+                {hasElements ?
+                    <IndividualTeamHeader state={{ ...state, team_result_set_name }} individualClass={'individualteamcolumnleft selected'} teamClass={'individualteamcolumnright'} teamLink={`/team/${endpoint}`} individualLink={state.individualLink} race_id={race_id} individual_result_set_id={urlParams.individual_result_set_id} team_result_set_id={urlParams.team_result_set_id} />
+                    :
+                    <IndividualTeamHeader state={state} individualClass={'individualteamcolumnleft selected'} teamClass={'individualteamcolumnright'} teamDisabled={true} individualLink={state.individualLink} race_id={race_id} individual_result_set_id={urlParams.individual_result_set_id} team_result_set_id={urlParams.team_result_set_id} />
+                }
+            </div>
+
             <div className="autoscroll-wrapper">
-                Enable Auto Scroll: <input type="checkbox" onChange={handleCheckbox}></input>
+                Enable Auto Scroll <input type="checkbox" onChange={handleCheckbox}></input>
             </div>
             <body className="outer-layer">
                 <div className="select-container">
                     <select className="select-box" value={first_clicked_result + "-" + state.name} onChange={(e) => { const result_set_data = e.target.value.split("-"); navigate(`./../${btoa(`${race_id}+${event_id}+${result_set_data[0]}`)}`, { state: { ...state, name: result_set_data[1] } }); window.location.reload(); }}>
                         {
-                            resultSets.individual_results.result.individual_results_sets.map((set) => {
+                            resultSets.result.individual_results_sets.map((set) => {
                                 return <option value={set.individual_result_set_id + "-" + set.individual_result_set_name}>
                                     {set.individual_result_set_name}
                                 </option>

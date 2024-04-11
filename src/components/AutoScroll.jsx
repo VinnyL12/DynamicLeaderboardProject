@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 const AutoScroll = ({ enabled, onBottom }) => {
     useEffect(() => {
         if (enabled) {
-            window.scrollTo(0, 290);
+            window.scrollTo(0, 250);
 
             const scrollInterval = setInterval(() => {
                 const windowHeight = window.innerHeight;
@@ -14,7 +14,7 @@ const AutoScroll = ({ enabled, onBottom }) => {
 
                 if (currentScrollPosition >= Math.floor(documentHeight - windowHeight - 1)) {
                     onBottom();
-                    window.scrollTo(0, 290);
+                    window.scrollTo(0, 250);
                 }
             }, 2000);
 

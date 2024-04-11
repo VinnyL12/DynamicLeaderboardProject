@@ -6,22 +6,22 @@ export default function IndividualTeamHeader({ individualClass, teamClass, state
     console.log("State " + state);
 
     return (
-        <div className="header-wrapper">
+        <>
             {!teamDisabled ?
-                <div>
-                    <Link to={individualLink} state={{ ...state }}>
+                <div className="header-wrapper">
+                    <Link className='link-header' to={individualLink} state={{ ...state }}>
                         <div className={individualClass}>
                             <h4>Individual Results</h4>
                         </div>
                     </Link>
-                    <Link to={teamLink} state={{ ...state, individual_id }}>
+                    <Link className='link-header' to={teamLink} state={{ ...state, individual_id }}>
                         <div className={teamClass}>
                             <h4>Team Results</h4>
                         </div>
                     </Link>
                 </div> :
-                <div>
-                    <Link to={individualLink} state={{ ...state }}>
+                <div className="header-wrapper">
+                    <Link className='link-header' to={individualLink} state={{ ...state }}>
                         <div className={individualClass}>
                             <h4>Individual Results</h4>
                         </div>
@@ -31,6 +31,6 @@ export default function IndividualTeamHeader({ individualClass, teamClass, state
                     </div>
                 </div>
             }
-        </div>
+        </>
     )
 }

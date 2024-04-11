@@ -115,6 +115,37 @@ query fetchTeamResultsSets($race_id: long!, $event_id: long!) {
 }
 `
 
+export const GET_UPDATED_INDIVIDUAL = gql`
+query fetchTeamResultsSets($race_id: long!, $event_id: long!) {
+  team_results_sets {
+    success
+    errors
+    result(filters: {race_id: $race_id}) {
+      team_result_set_id
+      team_result_set_name
+    }
+  }
+  frontend_call {
+    success
+    errors
+    result {
+      individual_results_sets(filters: {race_id: $race_id, event_id: $event_id}) {
+        individual_result_set_id
+        individual_result_set_name
+      	results{
+          result_id
+          first_name
+          last_name
+          place
+          bib
+          clock_time
+        }
+      }
+    }
+  }
+}
+`
+
 export const GET_TEAM = gql`
 query fetchTeamResultsSets($race_id: long!, $team_result_set_id: long!) {
   team_scores {
@@ -129,3 +160,16 @@ query fetchTeamResultsSets($race_id: long!, $team_result_set_id: long!) {
   }
 }
 `
+
+export const GET_UPDATED_TEAM = gql`
+query fetchTeamResultsSets($race_id: long!, $team_result_set_id: long!) {
+  team_frontend_call {
+    success
+    errors
+    result(filters: {race_id: $race_id, team_result_set_id: $team_result_set_id}) {
+      results_team_name
+      place
+      score
+    }
+  }
+}`
