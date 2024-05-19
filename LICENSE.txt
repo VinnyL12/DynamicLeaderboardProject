@@ -187,8 +187,7 @@
       same "printed page" as the copyright notice for easier
       identification within third-party archives.
 
-   Copyright 2024 RunSignup, Inc.
-   Authored By: Vincent Loretta
+   Copyright 2024 RunSignup, Inc authored Vincent Loretta and Connor Bennett
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
